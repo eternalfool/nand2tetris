@@ -16,5 +16,18 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
+    // incremint
+    Inc16(in=AnotherOut, out=inco);
+    // inc sel
+    Mux16(a=in, b=inco, sel=inc, out=incOut);
+    // if load
+    Mux16(a=incOut, b=in, sel=load, out=aout);
+    // reset
+    Mux16(a=aout, b=false, sel=reset, out=resetOut);
+    // The following was not needed, load is always true
+    // force load to be true if inc or reset 
+    // Mux(a=load, b=true, sel=inc, out=loadIncOut);
+    // Mux(a=loadIncOut, b=true, sel=reset, out=loadResetIncOut);
+    Register(in=resetOut, load=true, out=out, out=AnotherOut);
     // Put your code here:
 }
